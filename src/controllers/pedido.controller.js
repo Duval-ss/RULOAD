@@ -15,6 +15,8 @@ exports.crear = async (req, res) => {
       direccion = null,
       referencia = null,
       tipo_entrega,
+      documento_cliente = null,
+      tipo_documento = null,
       productos
     } = req.body;
 
@@ -47,9 +49,21 @@ exports.crear = async (req, res) => {
     const codigo = generarCodigoPedido();
     const [pedidoResult] = await conn.query(
       `INSERT INTO pedidos
-       (codigo, usuario_id, nombre_cliente, email_cliente, telefono, direccion, referencia, tipo_entrega, total, estado)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDIENTE')`,
-      [codigo, usuario_id || null, nombre_cliente, email_cliente, telefono, direccion, referencia, tipo_entrega, total]
+      (codigo, usuario_id, nombre_cliente, email_cliente, telefono, direccion, referencia, tipo_entrega, documento_cliente, tipo_documento, total, estado)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'PENDIENTE')`,
+      [
+      codigo,
+      usuario_id || null,
+      nombre_cliente,
+      email_cliente,
+      telefono,
+      direccion,
+      referencia,
+      tipo_entrega,
+      documento_cliente,
+      tipo_documento,
+      total
+    ]
     );
 
     const pedidoId = pedidoResult.insertId;
